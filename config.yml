@@ -1,4 +1,4 @@
-jtype: MyDummyExecutor
+jtype: PDFCrafter
 metas:
   py_modules:
-    - MODULE_NAME.py
+    - pdf_crafter.py

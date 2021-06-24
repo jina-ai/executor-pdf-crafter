@@ -7,7 +7,7 @@ import numpy as np
 from jina import Executor, DocumentArray, requests
 
 
-class MyDummyExecutor(Executor):
+class PDFCrafter(Executor):
     """
     Encode the Document blob into embedding.
 
