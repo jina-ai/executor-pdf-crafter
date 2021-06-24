@@ -15,6 +15,7 @@ def doc_generator(uri, buffer):
         doc = DocumentArray([Document(buffer=buffer, mime_type='application/pdf')])
     return doc
 
+
 def test_io_images_and_text(test_dir, input_pdf, expected_text):
     crafter = BaseExecutor.load_config('config.yml')
     for uri, buffer in input_pdf['img_text']:
