@@ -8,7 +8,7 @@ import fitz
 import numpy as np
 import pdfplumber
 from jina import DocumentArray, Executor, requests, Document
-from jina.logging.predefined import default_logger as logger
+from jina.logging.logger import JinaLogger
 
 
 class PDFCrafter(Executor):
@@ -19,6 +19,14 @@ class PDFCrafter(Executor):
     Text is further split by linebreaks and stored on chunk-chunk level ('cc')
     of the `Documents` with `mime_type` == text/plain.
     """
+    def __init__(
+            self,
+            *args,
+            **kwargs,
+    ):
+        super().__init__(*args, **kwargs)
+        self.logger = JinaLogger()
+
     @requests
     def craft(self, docs: DocumentArray, **kwargs):
         """
@@ -52,7 +60,7 @@ class PDFCrafter(Executor):
                 pdf_img = fitz.open(stream=doc.buffer, filetype='pdf')
                 pdf_text = pdfplumber.open(io.BytesIO(doc.buffer))
         except Exception as ex:
-            logger.error(f'Failed to open due to: {ex}')
+            self.logger.error(f'Failed to open due to: {ex}')
         return pdf_img, pdf_text
 
     def _extract_text(self, pdf_text) -> List[str]:
