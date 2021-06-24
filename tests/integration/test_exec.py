@@ -6,7 +6,4 @@ from jinahub.crafter.pdf_crafter import PDFCrafter
 
 
 def test_exec():
-    f = Flow().add(uses=MyDummyExecutor)
-    with f:
-        resp = f.post(on='/test', inputs=Document(), return_results=True)
-        assert resp is not None
+    pass
