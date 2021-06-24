@@ -30,7 +30,7 @@ class PDFCrafter(Executor):
     @requests
     def craft(self, docs: DocumentArray, **kwargs):
         """
-        Segements PDF files. Extracts data from them.
+        Read PDF files. Extracts data from them.
         Checks if the input is a string of the filename,
         or if it's the file in bytes.
         It will then extract the data from the file, creating a list for images,

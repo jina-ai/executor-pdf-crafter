@@ -10,7 +10,7 @@ PDFPlumberSegmenter is a segmenter used for extracting images and text as chunks
 - [🌱 Prerequisites](#-prerequisites)
 - [🚀 Usages](#-usages)
 - [🎉️ Example](#%EF%B8%8F-example)
-- [🔍️ Reference](#%EF%B8%8F-reference)
+
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -28,7 +28,7 @@ Use the prebuilt images from JinaHub in your python codes,
 ```python
 from jina import Flow
 	
-f = Flow().add(uses='jinahub+docker://MyDummyExecutor')
+f = Flow().add(uses='jinahub+docker://PDFCrafter')
 ```
 
 or in the `.yml` config.
@@ -36,8 +36,8 @@ or in the `.yml` config.
 ```yaml
 jtype: Flow
 pods:
-  - name: encoder
-    uses: 'jinahub+docker://MyDummyExecutor'
+  - name: crafter
+    uses: 'jinahub+docker://PDFCrafter'
 ```
 
 #### using source codes
@@ -46,7 +46,7 @@ Use the source codes from JinaHub in your python codes,
 ```python
 from jina import Flow
 	
-f = Flow().add(uses='jinahub://MyDummyExecutor')
+f = Flow().add(uses='jinahub://PDFCrafter')
 ```
 
 or in the `.yml` config.
@@ -54,26 +54,26 @@ or in the `.yml` config.
 ```yaml
 jtype: Flow
 pods:
-  - name: encoder
-    uses: 'jinahub://MyDummyExecutor'
+  - name: crafter
+    uses: 'jinahub://PDFCrafter'
 ```
 
 
 ### 📦️ Via Pypi
 
-1. Install the `jinahub-MY-DUMMY-EXECUTOR` package.
+1. Install the `executor-pdf-crafterR` package.
 
 	```bash
-	pip install git+https://github.com/jina-ai/EXECUTOR_REPO_NAME.git
+	pip install git+https://github.com/jina-ai/executor-pdf-crafter
 	```
 
-1. Use `jinahub-MY-DUMMY-EXECUTOR` in your code
+1. Use `executor-pdf-crafter` in your code
 
 	```python
 	from jina import Flow
-	from jinahub.SUB_PACKAGE_NAME.MODULE_NAME import MyDummyExecutor
+	from jinahub.crafter.pdf_crafter import PDFCrafter
 	
-	f = Flow().add(uses=MyDummyExecutor)
+	f = Flow().add(uses=PDFCrafter)
 	```
 
 
@@ -82,17 +82,17 @@ pods:
 1. Clone the repo and build the docker image
 
 	```shell
-	git clone https://github.com/jina-ai/EXECUTOR_REPO_NAME.git
-	cd EXECUTOR_REPO_NAME
-	docker build -t my-dummy-executor-image .
+	git clone https://github.com/jina-ai/executor-pdf-crafter
+	cd executor-pdf-crafter
+	docker build -t executor-pdf-crafter .
 	```
 
-1. Use `my-dummy-executor-image` in your codes
+1. Use `executor-pdf-crafter` in your codes
 
 	```python
 	from jina import Flow
 	
-	f = Flow().add(uses='docker://my-dummy-executor-image:latest')
+	f = Flow().add(uses='docker://executor-pdf-crafter:latest')
 	```
 	
 
@@ -102,7 +102,7 @@ pods:
 ```python
 from jina import Flow, Document
 
-f = Flow().add(uses='jinahub+docker://MyDummyExecutor')
+f = Flow().add(uses='jinahub+docker://PDFCrafter')
 
 with f:
     resp = f.post(on='foo', inputs=Document(), return_results=True)
@@ -111,13 +111,8 @@ with f:
 
 ### Inputs 
 
-`Document` with `blob` of the shape `256`.
+`Document` with `uri` or `buffer` of the PDF files. 
 
 ### Returns
 
-`Document` with `embedding` fields filled with an `ndarray` of the shape `embedding_dim` (=128, by default) with `dtype=nfloat32`.
-
-
-## 🔍️ Reference
-- Some reference
-
+`Document` with `chunks` containing text and images of the PDF
