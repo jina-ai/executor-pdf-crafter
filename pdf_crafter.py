@@ -13,7 +13,7 @@ from jina.logging.logger import JinaLogger
 
 class PDFCrafter(Executor):
     """
-    :class:`PDFSegmenter` Extracts data (text and images) from PDF files.
+    :class:`PDFCrafter` Extracts data (text and images) from PDF files.
     Stores images (`mime_type`=image/*) on chunk level ('c') and text segments (`mime_type`=text/plain)
     on chunk level ('c') in the root ('r') Document.
     Text is further split by linebreaks and stored on chunk-chunk level ('cc')
@@ -25,7 +25,7 @@ class PDFCrafter(Executor):
             **kwargs,
     ):
         super().__init__(*args, **kwargs)
-        self.logger = JinaLogger()
+        self.logger = JinaLogger(context='logger')
 
     @requests
     def craft(self, docs: DocumentArray, **kwargs):
