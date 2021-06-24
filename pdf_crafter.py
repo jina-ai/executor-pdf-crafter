@@ -34,11 +34,11 @@ class PDFCrafter(Executor):
 
             if pdf_img is not None:
                 images = self._extract_image(pdf_img)
-                doc.chunks += [Document(blob=img, mime_type='image/*') for img in images]
+                doc.chunks.extend([Document(blob=img, mime_type='image/*') for img in images])
                 self._tag_with_root_doc_id(doc, level='c')
             if pdf_text is not None:
                 texts = self._extract_text(pdf_text)
-                doc.chunks += [Document(text=t, mime_type='text/plain') for t in texts]
+                doc.chunks.extend([Document(text=t, mime_type='text/plain') for t in texts])
                 self._tag_with_root_doc_id(doc, level='c')
 
     def _parse_pdf(self, doc: Document):
