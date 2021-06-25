@@ -19,13 +19,14 @@ class PDFCrafter(Executor):
     Text is further split by linebreaks and stored on chunk-chunk level ('cc')
     of the `Documents` with `mime_type` == text/plain.
     """
+
     def __init__(
             self,
             *args,
             **kwargs,
     ):
         super().__init__(*args, **kwargs)
-        self.logger = JinaLogger(context='logger')
+        self.logger = JinaLogger(context=self.__class__.__name__)
 
     @requests
     def craft(self, docs: DocumentArray, **kwargs):
