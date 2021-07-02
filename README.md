@@ -61,7 +61,7 @@ pods:
 
 ### 📦️ Via Pypi
 
-1. Install the `executor-pdf-crafterR` package.
+1. Install the `executor-pdf-crafter` package.
 
 	```bash
 	pip install git+https://github.com/jina-ai/executor-pdf-crafter

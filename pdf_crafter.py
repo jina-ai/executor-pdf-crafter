@@ -16,8 +16,6 @@ class PDFCrafter(Executor):
     :class:`PDFCrafter` Extracts data (text and images) from PDF files.
     Stores images (`mime_type`=image/*) on chunk level ('c') and text segments (`mime_type`=text/plain)
     on chunk level ('c') in the root ('r') Document.
-    Text is further split by linebreaks and stored on chunk-chunk level ('cc')
-    of the `Documents` with `mime_type` == text/plain.
     """
 
     def __init__(
@@ -44,11 +42,9 @@ class PDFCrafter(Executor):
             if pdf_img is not None:
                 images = self._extract_image(pdf_img)
                 doc.chunks.extend([Document(blob=img, mime_type='image/*') for img in images])
-                self._tag_with_root_doc_id(doc, level='c')
             if pdf_text is not None:
                 texts = self._extract_text(pdf_text)
                 doc.chunks.extend([Document(text=t, mime_type='text/plain') for t in texts])
-                self._tag_with_root_doc_id(doc, level='c')
 
     def _parse_pdf(self, doc: Document):
         pdf_img = None
@@ -96,7 +92,3 @@ class PDFCrafter(Executor):
                             'float32')
                         images.append(np_arr)
         return images
-
-    def _tag_with_root_doc_id(self, doc: Document, level: str):
-        for chunk in DocumentArray([doc]).traverse_flat([level]):
-            chunk.tags['root_doc_id'] = doc.id
