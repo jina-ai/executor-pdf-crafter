@@ -1,6 +1,8 @@
 import pytest
 import os
 
+from jina import Document, DocumentArray
+
 
 @pytest.fixture()
 def test_dir() -> str:
@@ -33,3 +35,39 @@ def input_pdf(test_dir: str):
     return {'img_text': [(path_img_text, None), (None, input_bytes_images_text)],
             'text': [(path_text, None), (None, input_bytes_text)],
             'img': [(path_img, None), (None, input_bytes_image)]}
+
+
+@pytest.fixture()
+def doc_generator_img_text(input_pdf):
+    doc_array = []
+    for uri, buffer in input_pdf['img_text']:
+        if uri:
+            doc = DocumentArray([Document(uri=uri, mime_type='application/pdf')])
+        else:
+            doc = DocumentArray([Document(buffer=buffer, mime_type='application/pdf')])
+        doc_array.append(doc)
+    return doc_array
+
+
+@pytest.fixture()
+def doc_generator_text(input_pdf):
+    doc_array = []
+    for uri, buffer in input_pdf['text']:
+        if uri:
+            doc = DocumentArray([Document(uri=uri, mime_type='application/pdf')])
+        else:
+            doc = DocumentArray([Document(buffer=buffer, mime_type='application/pdf')])
+        doc_array.append(doc)
+    return doc_array
+
+
+@pytest.fixture()
+def doc_generator_img(input_pdf):
+    doc_array = []
+    for uri, buffer in input_pdf['img']:
+        if uri:
+            doc = DocumentArray([Document(uri=uri, mime_type='application/pdf')])
+        else:
+            doc = DocumentArray([Document(buffer=buffer, mime_type='application/pdf')])
+        doc_array.append(doc)
+    return doc_array

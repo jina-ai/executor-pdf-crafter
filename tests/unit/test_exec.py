@@ -4,22 +4,13 @@ __license__ = "Apache-2.0"
 import os
 
 from PIL import Image
-from jina import Document, DocumentArray
 from jina.executors import BaseExecutor
 
 
-def doc_generator(uri, buffer):
-    if uri:
-        doc = DocumentArray([Document(uri=uri, mime_type='application/pdf')])
-    else:
-        doc = DocumentArray([Document(buffer=buffer, mime_type='application/pdf')])
-    return doc
-
-
-def test_io_images_and_text(test_dir, input_pdf, expected_text):
+def test_io_images_and_text(test_dir,doc_generator_img_text, expected_text):
     crafter = BaseExecutor.load_config('config.yml')
-    for uri, buffer in input_pdf['img_text']:
-        doc = doc_generator(uri, buffer)
+    doc_array = doc_generator_img_text
+    for doc in doc_array:
         crafter.craft(doc)
         chunks = doc[0].chunks
         assert len(chunks) == 3
@@ -39,10 +30,10 @@ def test_io_images_and_text(test_dir, input_pdf, expected_text):
             assert chunks[2].mime_type == 'text/plain'
 
 
-def test_io_text(input_pdf, expected_text):
+def test_io_text(doc_generator_text, expected_text):
     crafter = BaseExecutor.load_config('config.yml')
-    for uri, buffer in input_pdf['text']:
-        doc = doc_generator(uri, buffer)
+    doc_array = doc_generator_text
+    for doc in doc_array:
         crafter.craft(doc)
         chunks = doc[0].chunks
         assert len(chunks) == 1
@@ -51,10 +42,10 @@ def test_io_text(input_pdf, expected_text):
         assert chunks[0].mime_type == 'text/plain'
 
 
-def test_io_img(test_dir, input_pdf):
+def test_io_img(test_dir, doc_generator_img):
     crafter = BaseExecutor.load_config('config.yml')
-    for uri, buffer in input_pdf['img']:
-        doc = doc_generator(uri, buffer)
+    doc_array = doc_generator_img
+    for doc in doc_array:
         crafter.craft(doc)
         chunks = doc[0].chunks
         assert len(chunks) == 3

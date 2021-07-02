@@ -4,22 +4,14 @@ __license__ = "Apache-2.0"
 import os
 
 from PIL import Image
-from jina import Flow, Document, DocumentArray
+from jina import Flow
 from jinahub.crafter.pdf_crafter import PDFCrafter
 
 
-def doc_generator(uri, buffer):
-    if uri:
-        doc = DocumentArray([Document(uri=uri, mime_type='application/pdf')])
-    else:
-        doc = DocumentArray([Document(buffer=buffer, mime_type='application/pdf')])
-    return doc
-
-
-def test_flow(test_dir, input_pdf, expected_text):
+def test_flow(test_dir, doc_generator_img_text, expected_text):
     flow = Flow().add(uses=PDFCrafter)
-    for uri, buffer in input_pdf['img_text']:
-        doc = doc_generator(uri, buffer)
+    doc_array = doc_generator_img_text
+    for doc in doc_array:
         with flow:
             results = flow.post(
                 on='/test',
